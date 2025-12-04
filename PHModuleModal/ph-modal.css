@@ -1,35 +1,66 @@
+/* ----------------------------------------------------------
+   FULL SCREEN OVERLAY — BREAK OUT OF ALL CIMA CONTAINERS
+----------------------------------------------------------- */
 #ph-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
+  position: fixed !important;          /* ignore parent containers */
+  inset: 0 !important;                 /* full viewport */
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0,0,0,0.35) !important;
+
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  z-index: 999999999 !important;
+
+  /* critical: prevent clipping */
+  overflow: visible !important;
+  pointer-events: auto !important;
 }
 
+/* ----------------------------------------------------------
+   MODAL WINDOW — CENTERED, FULL SIZE
+----------------------------------------------------------- */
 #ph-modal {
-  width: 90%;
-  height: 90%;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  position: relative;
-  overflow: hidden;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+
+  width: 90vw !important;
+  height: 90vh !important;
+
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+
+  overflow: hidden !important;
+  z-index: 999999999 !important;
 }
 
+/* ----------------------------------------------------------
+   CLOSE BUTTON
+----------------------------------------------------------- */
 #ph-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  font-size: 22px;
-  cursor: pointer;
-  background: none;
-  border: none;
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  font-size: 22px !important;
+  cursor: pointer !important;
+  background: none !important;
+  border: none !important;
+  z-index: 1000000000 !important;
 }
 
+/* ----------------------------------------------------------
+   IFRAME CONTENT
+----------------------------------------------------------- */
 .ph-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 12px !important;
 }
