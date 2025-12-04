@@ -1,5 +1,4 @@
 (function () {
-  console.log("PH Module script loaded");
 
   function bindButton() {
     const btn = document.getElementById("ph-launch");
@@ -12,16 +11,14 @@
   setInterval(bindButton, 400);
 
   function openModuleModal() {
-    const old = document.getElementById("ph-modal-overlay");
-    if (old) old.remove();
+    const existing = document.getElementById("ph-modal-overlay");
+    if (existing) existing.remove();
 
     const overlay = document.createElement("div");
     overlay.id = "ph-modal-overlay";
-
     overlay.innerHTML = `
       <div id="ph-modal">
         <button id="ph-close">✕</button>
-
         <iframe 
           class="ph-iframe"
           src="https://proud-shape-4583.dev.animaapp.io/?v=1763751847.009854"
@@ -31,8 +28,7 @@
 
     document.body.appendChild(overlay);
 
-    document.getElementById("ph-close").onclick = () => {
-      overlay.remove();
-    };
+    document.getElementById("ph-close").onclick = () => overlay.remove();
   }
+
 })();
