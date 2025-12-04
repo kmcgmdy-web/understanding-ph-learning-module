@@ -1,6 +1,6 @@
 (function () {
 
-  // continually try binding the button (CIMA renders widgets asynchronously)
+  // continually try binding the button (CIMA loads widgets async)
   function bindButton() {
     const btn = document.getElementById("ph-launch");
     if (btn && !btn.dataset.bound) {
@@ -11,17 +11,17 @@
   setInterval(bindButton, 400);
 
   function openModuleModal() {
-    // remove old modal if exists
+    // remove old versions if they exist
     const oldOverlay = document.getElementById("ph-modal-overlay");
     const oldModal = document.getElementById("ph-modal");
     if (oldOverlay) oldOverlay.remove();
     if (oldModal) oldModal.remove();
 
-    // create overlay (background only)
+    // ---- OVERLAY (background only) ----
     const overlay = document.createElement("div");
     overlay.id = "ph-modal-overlay";
 
-    // create modal container
+    // ---- MODAL WINDOW (separate element) ----
     const modal = document.createElement("div");
     modal.id = "ph-modal";
     modal.innerHTML = `
@@ -32,17 +32,17 @@
       ></iframe>
     `;
 
-    // append both to BODY (critical to escape CIMA containers)
+    // ---- append both to BODY ----
     document.body.appendChild(overlay);
     document.body.appendChild(modal);
 
-    // close behavior
+    // ---- close button ----
     document.getElementById("ph-close").onclick = () => {
       overlay.remove();
       modal.remove();
     };
 
-    // clicking outside modal closes it
+    // ---- clicking backdrop closes modal ----
     overlay.onclick = () => {
       overlay.remove();
       modal.remove();
