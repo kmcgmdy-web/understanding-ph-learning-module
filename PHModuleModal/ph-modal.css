@@ -1,11 +1,20 @@
 /* ----------------------------------------------------------
-   FULL SCREEN OVERLAY — BREAK OUT OF ALL CIMA CONTAINERS
+   Fix root HTML clipping (CIMA sometimes forces overflow)
+----------------------------------------------------------- */
+html, body {
+  overflow: visible !important;
+  position: static !important;
+}
+
+/* ----------------------------------------------------------
+   FULL SCREEN OVERLAY — ALWAYS ESCAPES CIMA WIDGET
 ----------------------------------------------------------- */
 #ph-modal-overlay {
-  position: fixed !important;          /* ignore parent containers */
-  inset: 0 !important;                 /* full viewport */
+  position: fixed !important;
+  inset: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
+
   background: rgba(0,0,0,0.35) !important;
 
   display: flex !important;
@@ -14,13 +23,15 @@
 
   z-index: 999999999 !important;
 
-  /* critical: prevent clipping */
   overflow: visible !important;
   pointer-events: auto !important;
+
+  contain: none !important;
+  isolation: isolate !important;
 }
 
 /* ----------------------------------------------------------
-   MODAL WINDOW — CENTERED, FULL SIZE
+   MODAL WINDOW — CENTERED + FULL SIZE
 ----------------------------------------------------------- */
 #ph-modal {
   position: fixed !important;
@@ -33,10 +44,14 @@
 
   background: white !important;
   border-radius: 12px !important;
+
   box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
 
   overflow: hidden !important;
-  z-index: 999999999 !important;
+  z-index: 1000000000 !important;
+
+  contain: none !important;
+  isolation: isolate !important;
 }
 
 /* ----------------------------------------------------------
@@ -44,23 +59,28 @@
 ----------------------------------------------------------- */
 #ph-close {
   position: absolute !important;
-  top: 16px !important;
+  top: 14px !important;
   right: 16px !important;
+
   font-size: 22px !important;
   cursor: pointer !important;
+
   background: none !important;
   border: none !important;
-  z-index: 1000000000 !important;
+
+  z-index: 1000000001 !important;
 }
 
 /* ----------------------------------------------------------
-   IFRAME CONTENT
+   IFRAME — FULL COVERAGE INSIDE MODAL
 ----------------------------------------------------------- */
 .ph-iframe {
   position: absolute !important;
   inset: 0 !important;
+
   width: 100% !important;
   height: 100% !important;
+
   border: none !important;
   border-radius: 12px !important;
 }
