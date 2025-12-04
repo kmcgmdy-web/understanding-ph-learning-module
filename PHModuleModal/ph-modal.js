@@ -1,6 +1,6 @@
 (function () {
 
-  // continually try binding the button (CIMA loads widgets async)
+  // CIMA loads HTML widgets asynchronously, so we bind repeatedly
   function bindButton() {
     const btn = document.getElementById("ph-launch");
     if (btn && !btn.dataset.bound) {
@@ -11,17 +11,18 @@
   setInterval(bindButton, 400);
 
   function openModuleModal() {
-    // remove old versions if they exist
+
+    // Remove any existing modal/overlay
     const oldOverlay = document.getElementById("ph-modal-overlay");
     const oldModal = document.getElementById("ph-modal");
     if (oldOverlay) oldOverlay.remove();
     if (oldModal) oldModal.remove();
 
-    // ---- OVERLAY (background only) ----
+    // -- Create overlay (background only) --
     const overlay = document.createElement("div");
     overlay.id = "ph-modal-overlay";
 
-    // ---- MODAL WINDOW (separate element) ----
+    // -- Create modal window --
     const modal = document.createElement("div");
     modal.id = "ph-modal";
     modal.innerHTML = `
@@ -32,21 +33,28 @@
       ></iframe>
     `;
 
-    // ---- append both to BODY ----
-    document.body.appendChild(overlay);
-    document.body.appendChild(modal);
+    // --- CRITICAL ---
+    // Append asynchronously to escape Cypher container clipping
+    setTimeout(() => {
+      document.body.appendChild(overlay);
+      document.body.appendChild(modal);
 
-    // ---- close button ----
-    document.getElementById("ph-close").onclick = () => {
-      overlay.remove();
-      modal.remove();
-    };
+      // Reinforce escaping stacking contexts
+      overlay.style.zIndex = "999999999";
+      modal.style.zIndex = "1000000000";
 
-    // ---- clicking backdrop closes modal ----
-    overlay.onclick = () => {
-      overlay.remove();
-      modal.remove();
-    };
+      // Close behavior
+      document.getElementById("ph-close").onclick = () => {
+        overlay.remove();
+        modal.remove();
+      };
+
+      overlay.onclick = () => {
+        overlay.remove();
+        modal.remove();
+      };
+
+    }, 0);
   }
 
 })();
