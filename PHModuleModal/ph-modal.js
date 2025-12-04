@@ -1,6 +1,19 @@
 (function () {
 
-  // CIMA loads HTML widgets asynchronously, so we bind repeatedly
+  /* -------------------------------------------------------
+     INJECT CSS DIRECTLY (CIMA-SAFE)
+  ------------------------------------------------------- */
+  (function loadCSS() {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://animated-sfogliatella-5ffbf1.netlify.app/PHModuleModal/ph-modal.css";
+    document.head.appendChild(link);
+  })();
+
+
+  /* -------------------------------------------------------
+     BIND LAUNCH BUTTON (CIMA loads async)
+  ------------------------------------------------------- */
   function bindButton() {
     const btn = document.getElementById("ph-launch");
     if (btn && !btn.dataset.bound) {
@@ -10,19 +23,23 @@
   }
   setInterval(bindButton, 400);
 
+
+  /* -------------------------------------------------------
+     OPEN FULLSCREEN MODAL
+  ------------------------------------------------------- */
   function openModuleModal() {
 
-    // Remove any existing modal/overlay
+    // Remove old versions
     const oldOverlay = document.getElementById("ph-modal-overlay");
     const oldModal = document.getElementById("ph-modal");
     if (oldOverlay) oldOverlay.remove();
     if (oldModal) oldModal.remove();
 
-    // -- Create overlay (background only) --
+    // Create overlay
     const overlay = document.createElement("div");
     overlay.id = "ph-modal-overlay";
 
-    // -- Create modal window --
+    // Create modal window
     const modal = document.createElement("div");
     modal.id = "ph-modal";
     modal.innerHTML = `
@@ -33,22 +50,24 @@
       ></iframe>
     `;
 
-    // --- CRITICAL ---
-    // Append asynchronously to escape Cypher container clipping
+    /* ---------------------------------------------------
+       CRITICAL:
+       Delay append so modal escapes CIMA containers.
+    --------------------------------------------------- */
     setTimeout(() => {
       document.body.appendChild(overlay);
       document.body.appendChild(modal);
 
-      // Reinforce escaping stacking contexts
       overlay.style.zIndex = "999999999";
       modal.style.zIndex = "1000000000";
 
-      // Close behavior
+      // Close button
       document.getElementById("ph-close").onclick = () => {
         overlay.remove();
         modal.remove();
       };
 
+      // Clicking backdrop closes modal
       overlay.onclick = () => {
         overlay.remove();
         modal.remove();
